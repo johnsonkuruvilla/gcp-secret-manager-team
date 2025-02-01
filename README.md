@@ -24,7 +24,7 @@ For GitHub Actions, set the `GOOGLE_CREDENTIALS` secret in your repository setti
 
 ## Usage
 
-1. Copy `terraform.tfvars.example` to `terraform.tfvars` and update the values as appropraite 
+1. Copy `manifests/terraform.tfvars.example` to `terraform.tfvars` and update the values as appropraite 
 2. You may need to tune the `.gitignore` file to include the tfvars files as necessary if you commit to personal repo to track changes
 3. Initialize Terraform:
 ```bash

@@ -10,6 +10,7 @@ output "iam_bindings" {
       role        = binding.role
       members     = binding.members
       description = binding.description
+      expression  = binding.expression
     }
   }
 }

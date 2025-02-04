@@ -3,17 +3,14 @@ project_id = "your-project-id"
 secret_manager_teams = {
   infra_team = {
     iam_member              = "group:infra-team@example.com"
-    allowed_secret_prefix   = "INFRA-TEAM"
-    denied_secret_prefixes  = ["DBA-TEAM", "NET-TEAM", "DEV-TEAM"]
+    allowed_secret_prefix   = "INFRA-TEAM-"
   }
   dba_team = {
     iam_member              = "group:dba-team@example.com"
-    allowed_secret_prefix   = "DBA-TEAM"
-    denied_secret_prefixes  = ["INFRA-TEAM", "NET-TEAM", "DEV-TEAM"]
+    allowed_secret_prefix   = "DBA-TEAM-"
   }
   net_team = {
     iam_member              = "user:johnson@example.com"
-    allowed_secret_prefix   = "NET-TEAM"
-    denied_secret_prefixes  = ["INFRA-TEAM", "DBA-TEAM", "DEV-TEAM"]
+    allowed_secret_prefix   = "NET-TEAM-"
   }
 }

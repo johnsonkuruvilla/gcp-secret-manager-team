@@ -1,10 +1,10 @@
 variable "project_id" {
-  description = "The GCP project ID where the secrets will be stored"
+  description = "The GCP project ID"
   type        = string
 }
 
 variable "secret_manager_teams" {
-  description = "Map of teams and their allowed and denied  secret prefixes"
+  description = "Map of teams and their allowed secret prefixes"
   type = map(object({
     iam_member              = string
     allowed_secret_prefix   = string
@@ -13,7 +13,7 @@ variable "secret_manager_teams" {
 }
 
 variable "role" {
-  description = "The IAM role to assign to each team "
+  description = "The IAM role to assign"
   type        = string
   default     = "roles/secretmanager.admin"
 }

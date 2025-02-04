@@ -10,36 +10,32 @@ locals {
   secret_manager_conditional_bindings = [
     for key, value in var.secret_manager_teams : {
       role        = var.role
-      members     = ["${value.iam_member}"]
-      title       = "allow-to-${key}-deny-others"
-      description = "Allow access to ${value.allowed_secret_prefix} secrets and deny access to other secrets"
-      expression  = <<-EOT
+      title       = "allow-to-${key}-secrets-deny-others"
+      description = "Allow access to ${value.allowed_secret_prefix} secrets and deny access to other team secrets"
+      members     = [value.iam_member]
+          expression  = <<-EOT
         (resource.name.startsWith("${local.secret_path}/${value.allowed_secret_prefix}")) ||
         (
           ${join(" && \n", [
             for prefix in value.denied_secret_prefixes :
-            "!(resource.name.startsWith(\"${local.secret_path}/${prefix}\"))"
+           "!(resource.name.startsWith(\"${local.secret_path}/${prefix}\"))"
           ])}
         )
-      EOT
+      EOT 
     }
   ]
 }
 
-# Create IAM bindings directly 
-resource "google_project_iam_binding" "secret_manager_conditional" {
-  for_each = {
-    for binding in local.secret_manager_conditional_bindings : binding.title => binding
-  }
+module "project-iam" {
+  source  = "terraform-google-modules/iam/google//modules/projects_iam"
+  version = "~> 8.0"
 
-  project = var.project_id
-  role    = each.value.role
+  projects = [var.project_id]
 
-  members = each.value.members
+  conditional_bindings = local.secret_manager_conditional_bindings
 
-  condition {
-    title       = each.value.title
-    description = each.value.description
-    expression  = each.value.expression
-  }
+  depends_on = [
+    null_resource.credentials_check,
+    data.google_project.current
+  ]
 }
